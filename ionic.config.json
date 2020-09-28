@@ -1,0 +1,7 @@
+{
+  "name": "monthlyfinancialplanning",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
