@@ -8,9 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { StoreModule } from '@ngrx/store';
-import { appReducers } from './core/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { CoreModule } from './core/core.module';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -18,8 +16,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    StoreModule.forRoot(appReducers),
-    StoreDevtoolsModule.instrument({ maxAge: 25 })
+    CoreModule,
   ],
   providers: [
     StatusBar,

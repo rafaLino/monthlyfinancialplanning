@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../core/store';
-import { TransactionAll } from '../core/store/transaction/transaction.actions';
+import { AppState } from '../core/states';
+import { TransactionGet } from '../core/states/transaction/transaction.actions';
 
 @Component({
   selector: 'app-home',
@@ -10,10 +10,12 @@ import { TransactionAll } from '../core/store/transaction/transaction.actions';
 })
 export class HomePage implements OnInit {
 
-  constructor(private store: Store<AppState>) { }
+  constructor(
+    private store: Store<AppState>
+  ) { }
 
   ngOnInit(): void {
-    this.store.dispatch(new TransactionAll());
+    this.store.dispatch(new TransactionGet());
   }
 
   close(event: MouseEvent) {

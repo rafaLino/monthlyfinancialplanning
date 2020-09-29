@@ -2,14 +2,14 @@ import { Transaction } from '../../entities/transaction.model';
 import { Action } from '@ngrx/store';
 
 export enum TransactionActionsTypes {
-    ALL = 'GET ALL TRANSACTIONS',
+    GET = 'GET ALL TRANSACTIONS',
     NEW = 'ADD NEW TRANSACTION',
     UPDATE = 'UPDATE A TRANSACTION',
     REMOVE = 'REMOVE A TRANSACTION'
 }
 
-export class TransactionAll implements Action {
-    readonly type: string = TransactionActionsTypes.ALL;
+export class TransactionGet implements Action {
+    readonly type: string = TransactionActionsTypes.GET;
 }
 
 export class TransactionNew implements Action {
@@ -29,4 +29,4 @@ export class TransactionRemove implements Action {
 
 }
 
-export type TransactionActions = TransactionAll | TransactionNew | TransactionUpdate | TransactionRemove;
+export type TransactionActions = TransactionGet | TransactionNew | TransactionUpdate | TransactionRemove;
