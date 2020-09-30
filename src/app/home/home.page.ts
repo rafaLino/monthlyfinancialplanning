@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../core/states';
 import { TransactionGet } from '../core/states/transaction/transaction.actions';
 import { selectAllList, selectEntities, selectIds } from '../core/states/transaction/transaction.selector';
+import { TransactionState } from '../core/states/transaction/transaction.state';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,7 @@ import { selectAllList, selectEntities, selectIds } from '../core/states/transac
 export class HomePage implements OnInit {
 
   constructor(
-    private store: Store<AppState>
+    private store: Store<TransactionState>
   ) { }
 
   ngOnInit(): void {
