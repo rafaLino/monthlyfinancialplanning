@@ -19,9 +19,11 @@ export class HomePage implements OnInit {
     this.transactions$ = this._service.getTransactions();
   }
 
-  close(event: MouseEvent) {
-    console.log(event);
-    event.preventDefault();
-    event.stopPropagation();
+  push() {
+    this._service.push();
+  }
+
+  remove() {
+    this._service.reset();
   }
 }

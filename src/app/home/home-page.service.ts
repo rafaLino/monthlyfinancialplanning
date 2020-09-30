@@ -3,8 +3,8 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Transaction } from '../core/entities/transaction.model';
 import { AppState } from '../core/states';
-import { TransactionGet } from '../core/states/transaction/transaction.actions';
-import { selectAllList } from '../core/states/transaction/transaction.selector';
+import { TransactionActions } from '../core/states/transaction/transaction.actions';
+import { TransactionSelectors } from '../core/states/transaction/transaction.selector';
 
 @Injectable()
 export class HomePageService {
@@ -14,8 +14,15 @@ export class HomePageService {
   ) { }
 
   getTransactions(): Observable<Transaction[]> {
-    this.store.dispatch(new TransactionGet());
-    return this.store.select(selectAllList);
+    this.store.dispatch(TransactionActions.GET());
+    return this.store.select(TransactionSelectors.selectAllList);
+  }
+
+  push() {
+    this.store.dispatch(TransactionActions.GET());
+  }
+  reset() {
+    this.store.dispatch(TransactionActions.RESET());
   }
 
 }

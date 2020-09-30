@@ -1,39 +1,25 @@
+import { createAction, props } from '@ngrx/store';
 import { Transaction } from '../../entities/transaction.model';
-import { Action } from '@ngrx/store';
 
-export enum TransactionActionsTypes {
-    GET = 'GET ALL TRANSACTIONS',
-    NEW = 'ADD NEW TRANSACTION',
-    UPDATE = 'UPDATE A TRANSACTION',
-    REMOVE = 'REMOVE A TRANSACTION',
-    LOADED = 'ALL TRANSACTION LOADED'
+class transactionActions {
+    GET = createAction('[TRANSACTION] GET TRANSACTIONS');
+
+    ADD = createAction('[TRANSACTION] ADD A TRANSACTION',
+        props<{ transaction: Transaction }>());
+
+    UPDATE = createAction('[TRANSACTION] UPDATE A TRANSACTION',
+        props<{ id: string, obj: Partial<Transaction> }>());
+
+    REMOVE = createAction('[TRANSACTION] REMOVE A TRANSACTION',
+        props<{ id: string }>());
+
+    SUCCESS = createAction('[TRANSACTION] OPERATION SUCCESSFULL',
+        props<{ transaction?: Transaction | Array<Transaction> }>());
+
+    FAIL = createAction('[TRANSACTION] OPERATION FAILED',
+        props<{ error: Error | any }>());
+
+    RESET = createAction('[TRANSACTION] RESET TRANSACTIONS');
 }
 
-export class TransactionGet implements Action {
-    readonly type: string = TransactionActionsTypes.GET;
-}
-
-export class TransactionLOADED implements Action {
-    readonly type: string = TransactionActionsTypes.LOADED;
-    constructor(public transactions?: Transaction[]) { }
-}
-
-export class TransactionNew implements Action {
-    readonly type: string = TransactionActionsTypes.NEW;
-    constructor(public payload: { transaction: Transaction }) { }
-}
-
-export class TransactionUpdate implements Action {
-    readonly type: string = TransactionActionsTypes.UPDATE;
-    constructor(public payload: { id: string, obj: Partial<Transaction> }) { }
-
-}
-
-export class TransactionRemove implements Action {
-    readonly type: string = TransactionActionsTypes.REMOVE;
-    constructor(public payload: { id: string }) { }
-
-}
-
-
-export type TransactionActions = TransactionGet | TransactionNew | TransactionUpdate | TransactionRemove;
+export const TransactionActions = new transactionActions();

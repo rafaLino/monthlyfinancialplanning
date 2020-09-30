@@ -1,26 +1,35 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, Effect, ofType } from '@ngrx/effects';
-import { EMPTY } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { EMPTY, of } from 'rxjs';
+import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { AppState } from '..';
 import { TransactionFirebaseService } from '../../services/transaction.firebase.service';
-import { TransactionActionsTypes, TransactionLOADED } from './transaction.actions';
+import { TransactionActions } from './transaction.actions';
+import { TransactionSelectors } from './transaction.selector';
 
 @Injectable()
 export class TransactionEffect {
 
     constructor(
+        private store: Store<AppState>,
         private actions$: Actions,
         private transactionService: TransactionFirebaseService
     ) { }
 
-    @Effect()
     loadTransactions$ = createEffect(() => this.actions$.pipe(
-        ofType(TransactionActionsTypes.GET),
-        mergeMap(() => this.transactionService.get()
-            .pipe(
-                map((transactions) => new TransactionLOADED(transactions)),
-                catchError(() => EMPTY)
-            ))
+        ofType(TransactionActions.GET),
+        withLatestFrom(this.store.select(TransactionSelectors.selectAllList)),
+        switchMap(([action, collection]) => {
+            if (collection && collection.length > 0)
+                return of(action).pipe(map(() => TransactionActions.SUCCESS({ transaction: collection })))
+            else
+                return this.transactionService.get()
+                    .pipe(
+                        map((transactions) => TransactionActions.SUCCESS({ transaction: transactions })),
+                        catchError(() => EMPTY)
+                    )
+        })
     )
     );
 

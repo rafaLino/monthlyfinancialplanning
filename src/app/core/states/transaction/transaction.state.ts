@@ -1,10 +1,8 @@
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { EntityState } from '@ngrx/entity';
 import { Transaction } from '../../entities/transaction.model';
 
 export interface TransactionState extends EntityState<Transaction> {
-
+    success: boolean,
+    error: boolean,
+    loading: boolean,
 }
-
-export const adapter: EntityAdapter<Transaction> = createEntityAdapter<Transaction>();
-
-export const initialState: TransactionState = adapter.getInitialState();

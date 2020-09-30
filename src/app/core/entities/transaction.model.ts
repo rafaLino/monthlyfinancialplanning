@@ -1,5 +1,5 @@
-export interface Transaction {
-    id: string,
-    name: string,
-    value: number,
+export class Transaction {
+    id: string;
+    name: string;
+    value: number;
 }

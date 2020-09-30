@@ -1,21 +1,71 @@
-import { TransactionActions, TransactionActionsTypes, TransactionNew, TransactionUpdate, TransactionRemove, TransactionLOADED } from './transaction.actions';
-import { initialState, adapter } from './transaction.state';
+import { EntityAdapter, createEntityAdapter } from '@ngrx/entity';
+import { Action, createReducer, on } from '@ngrx/store';
+import { Transaction } from '../../entities/transaction.model';
+import { TransactionActions } from './transaction.actions';
+import { TransactionState } from './transaction.state';
 
-export function reducer(state = initialState, action: TransactionActions) {
-    switch (action.type) {
-        case TransactionActionsTypes.LOADED:
-            return adapter.setAll((action as TransactionLOADED).transactions, state);
-        case TransactionActionsTypes.NEW:
-            return adapter.addOne((action as TransactionNew).payload.transaction, state);
-        case TransactionActionsTypes.UPDATE:
-            return adapter.updateOne({
-                id: (action as TransactionUpdate).payload.id,
-                changes: (action as TransactionUpdate).payload.obj
-            }, state);
-        case TransactionActionsTypes.REMOVE:
-            return adapter.removeOne((action as TransactionRemove).payload.id, state);
+const adapter: EntityAdapter<Transaction> = createEntityAdapter<Transaction>();
 
-        default: return state;
+const initialState: TransactionState = adapter.getInitialState({
+    success: false,
+    error: false,
+    loading: false
+});
 
-    }
+const transactionReducer = createReducer(
+    initialState,
+    on(TransactionActions.ADD, (state, { transaction }) => {
+        return adapter.addOne(transaction, {
+            ...state,
+            loading: true,
+        });
+    }),
+    on(TransactionActions.UPDATE, (state, { id, obj }) => {
+        return adapter.updateOne({
+            id,
+            changes: obj
+        }, {
+            ...state,
+            loading: true,
+        });
+    }),
+    on(TransactionActions.REMOVE, (state, { id }) => {
+        return adapter.removeOne(id, state);
+    }),
+    on(TransactionActions.SUCCESS, (state, { transaction }) => {
+        if (transaction && Array.isArray(transaction))
+            return adapter.setAll((transaction as Transaction[]), {
+                ...state,
+                success: true,
+                loading: false,
+            });
+        else if (transaction)
+            return adapter.setOne(transaction as Transaction, {
+                ...state,
+                success: true,
+                loading: false,
+                error: false,
+            });
+    }),
+    on(TransactionActions.FAIL, (state, { error }) => {
+        return {
+            ...state,
+            success: false,
+            loading: false,
+            error: true
+        }
+    }),
+    on(TransactionActions.GET, state => {
+        return {
+            ...state,
+            loading: true,
+        };
+    }),
+    on(TransactionActions.RESET, state => {
+        return adapter.removeAll(initialState);
+    })
+)
+
+export function reducer(state: TransactionState | undefined, action: Action) {
+    return transactionReducer(state, action);
 }

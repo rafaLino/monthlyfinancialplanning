@@ -1,17 +1,19 @@
 <ion-content [fullscreen]="true">
     <div id="container">
+        <ion-grid>
+            <ion-row *ngFor="let transaction of transactions$ | async">
+                <ion-col>{{transaction.id}}</ion-col>
+                <ion-col>{{transaction.name}}</ion-col>
+                <ion-col>{{transaction.value}}</ion-col>
+            </ion-row>
+        </ion-grid>
     </div>
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button color="danger">
+        <ion-fab-button (click)="push()" color="danger">
             <ion-icon name="add-outline"></ion-icon>
         </ion-fab-button>
-        <ion-fab-list (click)="close($event)" side="start">
-            <div class="add-new-transaction_box">
-                <ion-item>
-                    <ion-label position="stacked">Item</ion-label>
-                    <ion-input></ion-input>
-                </ion-item>
-            </div>
-        </ion-fab-list>
+        <ion-fab-button (click)="remove()" color="danger">
+            <ion-icon name="home"></ion-icon>
+        </ion-fab-button>
     </ion-fab>
 </ion-content>
