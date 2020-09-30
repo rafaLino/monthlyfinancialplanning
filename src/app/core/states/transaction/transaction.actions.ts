@@ -5,11 +5,17 @@ export enum TransactionActionsTypes {
     GET = 'GET ALL TRANSACTIONS',
     NEW = 'ADD NEW TRANSACTION',
     UPDATE = 'UPDATE A TRANSACTION',
-    REMOVE = 'REMOVE A TRANSACTION'
+    REMOVE = 'REMOVE A TRANSACTION',
+    LOADED = 'ALL TRANSACTION LOADED'
 }
 
 export class TransactionGet implements Action {
     readonly type: string = TransactionActionsTypes.GET;
+}
+
+export class TransactionLOADED implements Action {
+    readonly type: string = TransactionActionsTypes.LOADED;
+    constructor(public transactions?: Transaction[]) { }
 }
 
 export class TransactionNew implements Action {
@@ -28,5 +34,6 @@ export class TransactionRemove implements Action {
     constructor(public payload: { id: string }) { }
 
 }
+
 
 export type TransactionActions = TransactionGet | TransactionNew | TransactionUpdate | TransactionRemove;

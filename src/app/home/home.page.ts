@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../core/states';
 import { TransactionGet } from '../core/states/transaction/transaction.actions';
+import { selectAllList, selectEntities, selectIds } from '../core/states/transaction/transaction.selector';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,7 @@ export class HomePage implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(new TransactionGet());
+    this.store.select(selectAllList).subscribe(x => console.log(x));
   }
 
   close(event: MouseEvent) {
