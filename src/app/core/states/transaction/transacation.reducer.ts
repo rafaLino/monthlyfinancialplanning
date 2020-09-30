@@ -1,7 +1,7 @@
 import { EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Action, createReducer, on } from '@ngrx/store';
 import { Transaction } from '../../entities/transaction.model';
-import { TransactionActions } from './transaction.actions';
+import { TransactionActions, TransactionActionTypes } from './transaction.actions';
 import { TransactionState } from './transaction.state';
 
 const adapter: EntityAdapter<Transaction> = createEntityAdapter<Transaction>();
@@ -14,11 +14,11 @@ const initialState: TransactionState = adapter.getInitialState({
 
 const transactionReducer = createReducer(
     initialState,
-    on(TransactionActions.ADD, (state, { transaction }) => {
-        return adapter.addOne(transaction, {
+    on(TransactionActions.CREATE, (state, { transaction }) => {
+        return {
             ...state,
-            loading: true,
-        });
+            loading: true
+        }
     }),
     on(TransactionActions.UPDATE, (state, { id, obj }) => {
         return adapter.updateOne({
@@ -39,20 +39,22 @@ const transactionReducer = createReducer(
                 success: true,
                 loading: false,
             });
-        else if (transaction)
+        else if (transaction) {
             return adapter.setOne(transaction as Transaction, {
                 ...state,
                 success: true,
                 loading: false,
                 error: false,
             });
+        }
     }),
     on(TransactionActions.FAIL, (state, { error }) => {
         return {
             ...state,
             success: false,
             loading: false,
-            error: true
+            error: true,
+            exception: error
         }
     }),
     on(TransactionActions.GET, state => {

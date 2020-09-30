@@ -18,11 +18,8 @@ export class HomePageService {
     return this.store.select(TransactionSelectors.selectAllList);
   }
 
-  push() {
-    this.store.dispatch(TransactionActions.GET());
-  }
-  reset() {
-    this.store.dispatch(TransactionActions.RESET());
+  add(transaction: Transaction) {
+    this.store.dispatch(TransactionActions.CREATE({ transaction }));
   }
 
 }

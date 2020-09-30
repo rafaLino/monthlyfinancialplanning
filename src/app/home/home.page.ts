@@ -19,11 +19,9 @@ export class HomePage implements OnInit {
     this.transactions$ = this._service.getTransactions();
   }
 
-  push() {
-    this._service.push();
+  addNew() {
+    const t: Transaction = { name: 'tevez', value: 100 };
+    this._service.add(t);
   }
 
-  remove() {
-    this._service.reset();
-  }
 }

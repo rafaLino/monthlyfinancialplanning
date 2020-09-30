@@ -27,10 +27,20 @@ export class TransactionEffect {
                 return this.transactionService.get()
                     .pipe(
                         map((transactions) => TransactionActions.SUCCESS({ transaction: transactions })),
-                        catchError(() => EMPTY)
+                        catchError(er => of(TransactionActions.FAIL({ error: er })))
                     )
         })
-    )
-    );
+    ));
+
+    addTransaction$ = createEffect(() => this.actions$.pipe(
+        ofType(TransactionActions.CREATE,),
+        switchMap(({ transaction }) =>
+            this.transactionService.add(transaction)
+                .pipe(
+                    map(transaction => TransactionActions.SUCCESS({ transaction })),
+                    catchError(er => of(TransactionActions.FAIL({ error: er })))
+                )
+        ),
+    ));
 
 }

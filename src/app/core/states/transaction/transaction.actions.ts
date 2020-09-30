@@ -1,25 +1,34 @@
 import { createAction, props } from '@ngrx/store';
 import { Transaction } from '../../entities/transaction.model';
 
+export enum TransactionActionTypes {
+    GET = '[TRANSACTION] GET TRANSACTIONS',
+    CREATE = '[TRANSACTION] ADD A TRANSACTION',
+    UPDATE = '[TRANSACTION] UPDATE A TRANSACTION',
+    REMOVE = '[TRANSACTION] REMOVE A TRANSACTION',
+    SUCCESS = '[TRANSACTION] OPERATION SUCCESSFULL',
+    FAIL = '[TRANSACTION] OPERATION FAILED',
+    RESET = '[TRANSACTION] RESET TRANSACTIONS',
+}
 class transactionActions {
-    GET = createAction('[TRANSACTION] GET TRANSACTIONS');
+    GET = createAction(TransactionActionTypes.GET);
 
-    ADD = createAction('[TRANSACTION] ADD A TRANSACTION',
+    CREATE = createAction(TransactionActionTypes.CREATE,
         props<{ transaction: Transaction }>());
 
-    UPDATE = createAction('[TRANSACTION] UPDATE A TRANSACTION',
+    UPDATE = createAction(TransactionActionTypes.UPDATE,
         props<{ id: string, obj: Partial<Transaction> }>());
 
-    REMOVE = createAction('[TRANSACTION] REMOVE A TRANSACTION',
+    REMOVE = createAction(TransactionActionTypes.REMOVE,
         props<{ id: string }>());
 
-    SUCCESS = createAction('[TRANSACTION] OPERATION SUCCESSFULL',
+    SUCCESS = createAction(TransactionActionTypes.SUCCESS,
         props<{ transaction?: Transaction | Array<Transaction> }>());
 
-    FAIL = createAction('[TRANSACTION] OPERATION FAILED',
+    FAIL = createAction(TransactionActionTypes.FAIL,
         props<{ error: Error | any }>());
 
-    RESET = createAction('[TRANSACTION] RESET TRANSACTIONS');
+    RESET = createAction(TransactionActionTypes.RESET);
 }
 
 export const TransactionActions = new transactionActions();
