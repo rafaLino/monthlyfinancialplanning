@@ -3,13 +3,15 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Observable } from 'rxjs';
 import { Transaction } from '../entities/transaction.model';
 
-@Injectable()
-export class TransactionService {
+@Injectable({
+  providedIn: 'root'
+})
+export class TransactionFirebaseService {
 
   private static collectionString = 'transaction';
   private collection: AngularFirestoreCollection<Transaction>;
   constructor(private firestore: AngularFirestore) {
-    this.collection = firestore.collection(TransactionService.collectionString);
+    this.collection = firestore.collection(TransactionFirebaseService.collectionString);
   }
 
   public get(): Observable<Transaction[]> {

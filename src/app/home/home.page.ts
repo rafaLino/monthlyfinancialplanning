@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '../core/states';
-import { TransactionGet } from '../core/states/transaction/transaction.actions';
-import { selectAllList, selectEntities, selectIds } from '../core/states/transaction/transaction.selector';
-import { TransactionState } from '../core/states/transaction/transaction.state';
+import { Observable } from 'rxjs';
+import { Transaction } from '../core/entities/transaction.model';
+import { HomePageService } from './home-page.service';
 
 @Component({
   selector: 'app-home',
@@ -13,12 +11,12 @@ import { TransactionState } from '../core/states/transaction/transaction.state';
 export class HomePage implements OnInit {
 
   constructor(
-    private store: Store<TransactionState>
+    private _service: HomePageService
   ) { }
+  public transactions$: Observable<Transaction[]>;
 
   ngOnInit(): void {
-    this.store.dispatch(new TransactionGet());
-    this.store.select(selectAllList).subscribe(x => console.log(x));
+    this.transactions$ = this._service.getTransactions();
   }
 
   close(event: MouseEvent) {

@@ -6,8 +6,8 @@ import { AppEffects, appReducers } from './states';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environment';
-import { TransactionService } from './services/transaction.service';
-import { TransactionHistoryService } from './services/transaction-history.service';
+import { TransactionFirebaseService } from './services/transaction.firebase.service';
+import { TransactionHistoryFirebaseService } from './services/transaction-history.firebase.service';
 import { EffectsModule } from '@ngrx/effects';
 
 const MODULES = [
@@ -20,8 +20,8 @@ const MODULES = [
 ]
 
 const SERVICES = [
-  TransactionService,
-  TransactionHistoryService
+  TransactionFirebaseService,
+  TransactionHistoryFirebaseService,
 ]
 
 @NgModule({
